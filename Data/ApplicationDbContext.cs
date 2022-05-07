@@ -9,5 +9,6 @@ namespace WeBScraper_CourseProject_.Data
             : base(options)
         {
         }
+        public DbSet<News> NewsDb { get; set; }
     }
 }
