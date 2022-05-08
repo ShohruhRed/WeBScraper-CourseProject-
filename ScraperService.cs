@@ -41,7 +41,12 @@ namespace WeBScraper_CourseProject_
 
             return jobs;
         }
-               
+
+        public async Task<List<News>> GetDbNews()
+        {
+            return await _context.NewsDb.ToListAsync();
+
+        }
 
         public async Task<ActionResult<List<News>>> AddNews(News news)
         {

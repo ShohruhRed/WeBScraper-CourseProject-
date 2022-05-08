@@ -1,0 +1,56 @@
+﻿@page "/favourites"
+@using WeBScraper_CourseProject_
+@inject ScraperService ScraperService
+
+
+<h3>Favourites</h3>
+
+@if (LstData == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+<div class="container">
+    <div class="panel panel-info">
+        <div class="panel-title">
+            <h3>ADDED NEWS</h3>
+        </div>
+    </div>
+   <div class="panel-body">
+       <table class ="table table-responsive">
+           <thead>
+               <tr>
+                   <th>Image</th>
+                   <th>Headline</th>
+                   <th>Details</th>
+                   <th>
+
+                   </th>
+               </tr>
+           </thead>
+           <tbody>
+                @foreach(var item in LstData)
+                {
+                    <tr>
+                        <td><img src="@item.Img" style="width:80px;height:80px"/></td>
+                        <td>@item.Title</td>
+                        <td><a href="@item.Details">Details</a></td>                       
+                    </tr>
+                }
+            </tbody>
+
+       </table>
+
+   </div>
+</div>
+}
+@code {
+    public List<News> LstData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        LstData = await ScraperService.GetDbNews();
+    }
+
+}
