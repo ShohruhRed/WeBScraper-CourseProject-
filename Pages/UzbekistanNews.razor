@@ -1,4 +1,5 @@
 ﻿@page "/uzbekistannews"
+@attribute [Authorize]
 @using WeBScraper_CourseProject_.Data
 @inject ScraperService ScraperService
 @inject NavigationManager NavigationManager
@@ -55,7 +56,7 @@ else
 public List<News> LstData;
 News news = new News();
 
-protected override async Task OnInitializedAsync() => LstData = await ScraperService.BelarusNewsScrapping();
+protected override async Task OnInitializedAsync() => LstData = await ScraperService.UzbekistanNewsScraper();
 
  async Task ShowNews(string image,string title, string details)
     {      
