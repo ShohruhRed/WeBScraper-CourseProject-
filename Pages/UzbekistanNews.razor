@@ -1,0 +1,68 @@
+﻿@page "/uzbekistannews"
+@using WeBScraper_CourseProject_.Data
+@inject ScraperService ScraperService
+@inject NavigationManager NavigationManager
+
+<h3>UzbekistanNews</h3>
+
+@if(LstData == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+   <div class="container">
+    <div class="panel panel-info">
+        <div class="panel-title">
+            <h3>Uzbekistan News</h3>
+        </div>
+    </div>
+   <div class="panel-body">
+       <table class ="table table-responsive">
+           <thead>
+               <tr>
+                   <th>Image</th>
+                   <th>Headline</th>
+                   <th>Details</th>
+                   <th>
+
+                   </th>
+               </tr>
+           </thead>
+           <tbody>
+                @foreach(var item in LstData)
+                {                   
+                    <tr>
+                        <td id="newsimage"><img src="@item.Img" style="width:80px;height:80px"/></td>
+                        <td id="newstitle">@item.Title</td>
+                        <td id="newsdetails"><a href="@item.Details">Details</a></td>
+                         <td>
+                            <button class="btn btn-primary"  @onclick="(() => ShowNews(item.Img,item.Title,item.Details))" ><i class="oi oi-eyedropper"></i></button>
+                         </td>
+                    </tr>
+                }
+            </tbody>
+
+       </table>
+        
+
+   </div>
+</div>
+}
+
+@code {
+
+public List<News> LstData;
+News news = new News();
+
+protected override async Task OnInitializedAsync() => LstData = await ScraperService.BelarusNewsScrapping();
+
+ async Task ShowNews(string image,string title, string details)
+    {      
+        news.Img = image;
+        news.Title = title;
+        news.Details = details;
+        await ScraperService.AddNews(news);
+    }
+
+}
