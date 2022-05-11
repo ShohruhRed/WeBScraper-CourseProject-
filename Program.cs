@@ -4,14 +4,19 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
+using MudBlazor.Services;
 using WeBScraper_CourseProject_;
 using WeBScraper_CourseProject_.Areas.Identity;
 using WeBScraper_CourseProject_.Data;
+using Microsoft.Owin;
+using Microsoft.Owin.Security.Google;
 
 var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 //builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //    options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -23,6 +28,25 @@ builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuth
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddTransient<ScraperService>().AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+builder.Services.AddMudServices();
+builder.Services.AddAuthentication()
+   .AddGoogle(options =>
+   {
+       options.ClientId = builder.Configuration.GetSection("Authentication")
+        .GetValue<string>("ClientId");
+       options.ClientSecret = builder.Configuration.GetSection("Authentication")
+       .GetValue<string>("ClientSecret");
+
+   })
+   .AddFacebook(options =>
+   {
+       options.ClientId = builder.Configuration.GetSection("AuthenticationFB")
+       .GetValue<string>("ClientId");
+       options.ClientSecret = builder.Configuration.GetSection("AuthenticationFB")
+       .GetValue<string>("ClientSecret");
+   }
+   );
+   
 
 var app = builder.Build();
 
