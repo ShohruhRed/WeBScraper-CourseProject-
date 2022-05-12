@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using System.Linq
+@inject NavigationManager NavigationManager
 
 <PageTitle>Index</PageTitle>
 
@@ -10,26 +11,152 @@ Welcome to your new app.
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 
-
-
-<MudSelect T="string" MultiSelection="true" SelectAll="true" SelectAllText="Select all felines" HelperText="@value" @bind-Value="value" @bind-SelectedValues="options" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))" Label="Felines" AdornmentIcon="@Icons.Material.Filled.Search">
-    @foreach (var feline in felines)
+<AuthorizeView>
+    <Authorized>
+        <MudSelect T="string" MultiSelection="true" SelectAll="true" SelectAllText="Select all news" HelperText="@value" @bind-Value="value" @bind-SelectedValues="options" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))" Label="News" AdornmentIcon="@Icons.Material.Filled.Search">
+    @foreach (var feline in news)
     {
         <MudSelectItem T="string" Value="@feline">@feline</MudSelectItem>
     }
 </MudSelect>
-
-@code { 
-    private string value { get; set; } = "Nothing selected";
-    private IEnumerable<string> options { get; set; } = new HashSet<string>() { "Lion" };
-
-    private string[] felines =
+<MudButton Disabled="@_processing" OnClick="ProcessSomething" Variant="Variant.Filled" Color="Color.Primary">
+    @if (_processing)
     {
-        "Jaguar", "Leopard", "Lion", "Lynx", "Panther", "Puma", "Tiger"
+        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+        <MudText Class="ms-2">Processing</MudText>
+    }
+    else
+    {
+        <MudText>show recommendations</MudText>
+    }  
+
+
+</MudButton>
+
+<MudButton Variant="Variant.Filled" hidden="@uzbBtn" OnClick="RedirectToUz" Color="Color.Dark">Uzbekistan news</MudButton>
+<MudButton Variant="Variant.Filled" hidden="@belBtn" OnClick="RedirectToBel" Color="Color.Dark">Belarus news</MudButton>
+<MudButton Variant="Variant.Filled" hidden="@sportBtn" OnClick="RedirectToSport" Color="Color.Dark">Sport news</MudButton>
+<MudButton Variant="Variant.Filled" hidden="@musicBtn" OnClick="RedirectToMusic" Color="Color.Dark">Music news</MudButton>
+<MudButton Variant="Variant.Filled" hidden="@movBtn" OnClick="RedirectToMov" Color="Color.Dark">Movies news</MudButton>
+<MudButton Variant="Variant.Filled" hidden="@gamesBtn" OnClick="RedirectToGames" Color="Color.Dark">Games news</MudButton>
+  
+    </Authorized>
+    <NotAuthorized>
+        <h3>Auth</h3>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private string value { get; set; } = "Nothing selected";
+    private IEnumerable<string> options { get; set; } = new HashSet<string>() { "Sport" };
+    private bool _processing = false;
+    private bool uzbBtn = true;
+    private bool belBtn = true ;
+    private bool sportBtn = true;
+    private bool musicBtn = true;
+    private bool movBtn = true;
+    private bool gamesBtn = true;
+    private List<string> Svalues{ get; set; }
+    private bool arrows = true;
+    private bool bullets = true;
+    private bool autocycle = true;
+    private Transition transition = Transition.Slide;
+    private bool carState;
+
+    private string[] news =
+    {
+        "Uzbekistan", "Belarus", "Sport", "Music", "Movie", "Games"
     };
 
     private string GetMultiSelectionText(List<string> selectedValues)
     {
-        return $"{selectedValues.Count} feline{(selectedValues.Count > 1 ? "s have" : " has")} been selected";
+        Svalues = selectedValues;
+        return $"{selectedValues.Count} news{(selectedValues.Count > 1 ? " have" : " has")} been selected";
+    }
+
+
+    async Task ProcessSomething()
+    {
+        _processing = true;
+        await Task.Delay(800);
+        _processing = false;
+        carState = true;
+        if(Svalues.Contains("Uzbekistan"))
+        {
+            uzbBtn = false;
+        }
+        else
+        {
+            uzbBtn = true;
+        }
+        if(Svalues.Contains("Belarus"))
+        {
+            belBtn = false;
+        }
+        else
+        {
+            belBtn = true;
+        }
+        if(Svalues.Contains("Sport"))
+        {
+            sportBtn = false;
+        }
+        else
+        {
+            sportBtn = true;
+        }
+        if(Svalues.Contains("Music"))
+        {
+            musicBtn = false;
+        }
+        else
+        {
+            musicBtn = true;
+        }
+        if(Svalues.Contains("Movie"))
+        {
+            movBtn = false;
+        }
+        else
+        {
+            movBtn = true;
+        }
+        if(Svalues.Contains("Games"))
+        {
+            gamesBtn = false;
+        }
+        else
+        {
+            gamesBtn = true;
+        }
+
+        _processing = true;
+        await Task.Delay(2000);
+        _processing = false;
+        carState = true;
+    }
+    async Task RedirectToUz()
+    {
+        NavigationManager.NavigateTo("/uzbekistannews");
+    }
+    async Task RedirectToBel()
+    {
+        NavigationManager.NavigateTo("/belarusnews");
+    }
+    async Task RedirectToSport()
+    {
+        NavigationManager.NavigateTo("/sportnews");
+    }
+    async Task RedirectToMusic()
+    {
+        NavigationManager.NavigateTo("/musicnews");
+    }
+    async Task RedirectToMov()
+    {
+        NavigationManager.NavigateTo("/moviesnews");
+    }
+    async Task RedirectToGames()
+    {
+        NavigationManager.NavigateTo("/gamesnews");
     }
 }
