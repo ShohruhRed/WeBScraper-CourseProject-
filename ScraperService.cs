@@ -87,7 +87,7 @@ namespace WeBScraper_CourseProject_
                     Details = details,
                     Img = img,
 
-                }); ;
+                }); 
             }
 
             return jobs;
@@ -145,7 +145,7 @@ namespace WeBScraper_CourseProject_
                     Details = details,
                     Img = img,
 
-                }); ;
+                }); 
             }
 
             return jobs;
@@ -174,7 +174,7 @@ namespace WeBScraper_CourseProject_
                     Details = details,
                     Img = img,
 
-                }); ;
+                }); 
             }
 
             return jobs;
@@ -205,7 +205,7 @@ namespace WeBScraper_CourseProject_
                     Details = details,
                     Img = img,
 
-                }); ;
+                }); 
             }
 
             return jobs;

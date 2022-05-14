@@ -2,13 +2,14 @@
 @using System.Linq
 @inject NavigationManager NavigationManager
 
+
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+Welcome to the news recommendation system.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<SurveyPrompt Title="Choose the news categories you like and you will get news recommendations based on your choice" />
 
 
 <AuthorizeView>
@@ -33,16 +34,17 @@ Welcome to your new app.
 
 </MudButton>
 
-<MudButton Variant="Variant.Filled" hidden="@uzbBtn" OnClick="RedirectToUz" Color="Color.Dark">Uzbekistan news</MudButton>
-<MudButton Variant="Variant.Filled" hidden="@belBtn" OnClick="RedirectToBel" Color="Color.Dark">Belarus news</MudButton>
-<MudButton Variant="Variant.Filled" hidden="@sportBtn" OnClick="RedirectToSport" Color="Color.Dark">Sport news</MudButton>
-<MudButton Variant="Variant.Filled" hidden="@musicBtn" OnClick="RedirectToMusic" Color="Color.Dark">Music news</MudButton>
-<MudButton Variant="Variant.Filled" hidden="@movBtn" OnClick="RedirectToMov" Color="Color.Dark">Movies news</MudButton>
-<MudButton Variant="Variant.Filled" hidden="@gamesBtn" OnClick="RedirectToGames" Color="Color.Dark">Games news</MudButton>
+<MudButton Variant="Variant.Filled" hidden="@uzbBtn" Color="Color.Dark" Href="/uzbekistannews">Uzbekistan news</MudButton>
+<MudButton Variant="Variant.Filled" hidden="@belBtn" Color="Color.Dark" Href="/belarusnews">Belarus news</MudButton>
+<MudButton Variant="Variant.Filled" hidden="@sportBtn" Color="Color.Dark" Href="/sportnews">Sport news</MudButton>
+<MudButton Variant="Variant.Filled" hidden="@musicBtn" Color="Color.Dark" Href="/musicnews">Music news</MudButton>
+<MudButton Variant="Variant.Filled" hidden="@movBtn" Color="Color.Dark" Href="/moviesnews">Movies news</MudButton>
+<MudButton Variant="Variant.Filled" hidden="@gamesBtn" Color="Color.Dark" Href="/gamesnews">Games news</MudButton>
   
     </Authorized>
     <NotAuthorized>
-        <h3>Auth</h3>
+        <h3>To work with the system, you need to <a href="https://localhost:7023/Identity/Account/Register">register</a> or <a href="https://localhost:7023/Identity/Account/Login">authorize</a></h3>
+        
     </NotAuthorized>
 </AuthorizeView>
 
@@ -57,11 +59,9 @@ Welcome to your new app.
     private bool movBtn = true;
     private bool gamesBtn = true;
     private List<string> Svalues{ get; set; }
-    private bool arrows = true;
-    private bool bullets = true;
-    private bool autocycle = true;
-    private Transition transition = Transition.Slide;
+    
     private bool carState;
+
 
     private string[] news =
     {
@@ -134,29 +134,5 @@ Welcome to your new app.
         await Task.Delay(2000);
         _processing = false;
         carState = true;
-    }
-    async Task RedirectToUz()
-    {
-        NavigationManager.NavigateTo("/uzbekistannews");
-    }
-    async Task RedirectToBel()
-    {
-        NavigationManager.NavigateTo("/belarusnews");
-    }
-    async Task RedirectToSport()
-    {
-        NavigationManager.NavigateTo("/sportnews");
-    }
-    async Task RedirectToMusic()
-    {
-        NavigationManager.NavigateTo("/musicnews");
-    }
-    async Task RedirectToMov()
-    {
-        NavigationManager.NavigateTo("/moviesnews");
-    }
-    async Task RedirectToGames()
-    {
-        NavigationManager.NavigateTo("/gamesnews");
-    }
+    }      
 }

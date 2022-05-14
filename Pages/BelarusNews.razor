@@ -53,17 +53,17 @@ else
 
 @code {
 
-public List<News> LstData;
-News news = new News();
+    public List<News> LstData;
+    News news = new News();
 
-protected override async Task OnInitializedAsync() => LstData = await ScraperService.BelarusNewsScraper();
+    protected override async Task OnInitializedAsync() => LstData = await ScraperService.BelarusNewsScraper();
 
- async Task ShowNews(string image,string title, string details)
+    async Task ShowNews(string image,string title, string details)
     {      
         news.Img = image;
         news.Title = title;
         news.Details = details;
-        await ScraperService.AddNews(news);
+        await ScraperService.AddNews(news);        
     }
 
 }

@@ -2,8 +2,9 @@
 @using WeBScraper_CourseProject_
 @inject ScraperService ScraperService
 
-
-<h3>Favourites</h3>
+<AuthorizeView>
+    <Authorized>
+        <h3>Favourites</h3>
 
 @if (LstData == null)
 {
@@ -45,6 +46,16 @@ else
    </div>
 </div>
 }
+
+
+</Authorized>
+
+<NotAuthorized>     
+        <h3>To work with the system, you need to <a href="https://localhost:7023/Identity/Account/Register">register</a> or <a href="https://localhost:7023/Identity/Account/Login">authorize</a></h3>
+        
+</NotAuthorized>
+
+</AuthorizeView>
 @code {
     public List<News> LstData;
 
