@@ -47,8 +47,14 @@ builder.Services.AddAuthentication()
        .GetValue<string>("ClientId");
        options.ClientSecret = builder.Configuration.GetSection("AuthenticationFB")
        .GetValue<string>("ClientSecret");
-   }
-   );
+   })
+   .AddTwitter(options =>
+   {
+       options.ConsumerKey = builder.Configuration.GetSection("AuthenticationTwitter")
+       .GetValue<string>("ConsumerKey");
+       options.ConsumerSecret = builder.Configuration.GetSection("AuthenticationTwitter")
+       .GetValue<string>("ConsumerSecret");
+   });
    
 
 var app = builder.Build();
