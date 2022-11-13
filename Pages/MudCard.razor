@@ -1,0 +1,112 @@
+﻿@page "/mudcard"
+@using WeBScraper_CourseProject_.Data
+@inject ScraperService ScraperService
+<h3>Sport News</h3>
+
+@if (LstData == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var item in LstData)
+        {          
+        
+
+    @*<div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+            <div class="col-md-4">                              
+                    <img src="@item.Img" class="img-fluid rounded-start" alt="...">                
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">                   
+                        <h5 class="card-title">Title</h5>
+                        <p class="card-text">@item.Title</p>
+                        <p class="card-text"><small class="text-muted">Последнее обновление 3 мин. назад</small></p>                  
+
+                </div>
+            </div>
+        </div>
+    </div>*@            
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="@item.Img" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Sport</h5>
+                            <p class="card-text">@item.Title</p>
+                        </div>
+                        <div class="card-footer">
+                        <button type="button" class="btn btn-primary">Add to  <i class="bi bi-heart"></i></button>
+
+                        
+                        </div>
+                        <div class="card-footer">                        
+                            <small class="text-muted">Last updated 3 mins ago</small>
+                        </div>
+                    </div>
+                </div>
+    
+    }
+
+    </div>
+}
+@if (BelNews == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var item in BelNews)
+        {       
+        
+       
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="@item.Img" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Sport</h5>
+                            <p class="card-text">@item.Title</p>
+                        </div>
+                        <div class="card-footer">
+                        <button type="button" class="btn btn-primary">Add to  <i class="bi bi-heart"></i></button>
+
+                        
+                        </div>
+                        <div class="card-footer">                        
+                            <small class="text-muted">Last updated 3 mins ago</small>
+                        </div>
+                    </div>
+                </div>
+    
+    }
+
+    </div>
+}
+
+
+
+@code {
+    public List<News> LstData;
+    public List<News> BelNews;
+    News news = new News();
+    public bool AlarmOn { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        LstData = await ScraperService.SportNewsScraper();
+        BelNews = await ScraperService.BelarusNewsScraper();
+    }
+
+
+    async Task ShowNews(string image, string title, string details)
+    {
+        news.Img = image;
+        news.Title = title;
+        news.Details = details;
+        await ScraperService.AddNews(news);
+    }
+    
+
+}
