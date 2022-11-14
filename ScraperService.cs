@@ -1,4 +1,6 @@
 ﻿using HtmlAgilityPack;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -9,30 +11,81 @@ namespace WeBScraper_CourseProject_
     public class ScraperService : IScraperService
     {
         private readonly ApplicationDbContext _context;
+        private readonly AuthenticationStateProvider _authenticationState;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ScraperService(ApplicationDbContext context)
+        public ScraperService(ApplicationDbContext context, AuthenticationStateProvider authenticationState,
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _authenticationState = authenticationState;
+            _userManager = userManager;
         }
 
         public async Task<List<News>> GetDbNews()
         {
-            return await _context.NewsDb.ToListAsync();
+            var authstate = await _authenticationState.GetAuthenticationStateAsync();
+            var userAuth = authstate.User;
+            var name = userAuth.Identity.Name;
+            var user = await _userManager.FindByNameAsync(name);
+            
+
+
+            var personNews = await _context.News_Users
+                .Where(w => w.UserId == user.Id)
+                .Include(n => n.News)
+                .ToListAsync();
+
+            var listNews = new List<News>();
+          
+
+            foreach (var item in personNews)
+            {
+                var list = new News
+                {
+                    Title = item.News.Title,
+                    Details = item.News.Details,
+                    Img = item.News.Img
+                };
+
+                listNews.Add(list);
+                
+            }         
+                       
+
+            return listNews;
 
         }
 
-        public async Task<ActionResult<List<News>>> AddNews(News news)
+        
+        public async Task<string> AddNews(News news)
         {
+            var authstate = await _authenticationState.GetAuthenticationStateAsync();
+            var userAuth = authstate.User;
+            var name = userAuth.Identity.Name;
+            var user =  await _userManager.FindByNameAsync(name);
+            var userId = user.Id.ToString();
+
+            var usernews = new News_User
+            {
+                NewsId = news.Id,
+                User = user,
+                News = news
+            };
+
             try
             {
                 await _context.NewsDb.AddAsync(news);
+                await _context.News_Users.AddAsync(usernews);
                 await _context.SaveChangesAsync();
+                
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            return await _context.NewsDb.ToListAsync();
+
+            return "successfully upload";
 
         }
 

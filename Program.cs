@@ -29,7 +29,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
 
-builder.Services.AddTransient<ScraperService>().AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddScoped<ScraperService>().AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddMudServices();
 builder.Services.AddAuthentication()
