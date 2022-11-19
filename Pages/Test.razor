@@ -6,7 +6,7 @@
 
 @if(LstData == null)
 {
-    <p><em>Loading...</em></p>
+    <p><em>Loading...</em></p>   
 }
 else
 {
@@ -76,7 +76,11 @@ else
     public List<News> LstData;
     News news = new News();
 
-    protected override async Task OnInitializedAsync() => LstData = await ScraperService.SportNewsScraper();
+    protected override Task OnInitializedAsync()
+    {
+        return  ScraperService.DataGraph(); 
+    }
+
 
     async Task ShowNews(string image, string title, string details)
     {

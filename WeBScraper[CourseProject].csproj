@@ -25,6 +25,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
     <PackageReference Include="MudBlazor" Version="6.0.10" />
+    <PackageReference Include="Neo4j.Driver" Version="5.2.0" />
+    <PackageReference Include="Neo4j.Driver.Simple" Version="5.2.0" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

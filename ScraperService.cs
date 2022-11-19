@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Neo4j.Driver;
 using System.Net;
 using WeBScraper_CourseProject_.Data;
 
@@ -13,13 +14,14 @@ namespace WeBScraper_CourseProject_
         private readonly ApplicationDbContext _context;
         private readonly AuthenticationStateProvider _authenticationState;
         private readonly UserManager<ApplicationUser> _userManager;
+        
 
         public ScraperService(ApplicationDbContext context, AuthenticationStateProvider authenticationState,
             UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _authenticationState = authenticationState;
-            _userManager = userManager;
+            _userManager = userManager;            
         }
 
         public async Task<List<News>> GetDbNews()
@@ -63,8 +65,7 @@ namespace WeBScraper_CourseProject_
             var authstate = await _authenticationState.GetAuthenticationStateAsync();
             var userAuth = authstate.User;
             var name = userAuth.Identity.Name;
-            var user =  await _userManager.FindByNameAsync(name);
-            var userId = user.Id.ToString();
+            var user =  await _userManager.FindByNameAsync(name);            
 
             var usernews = new News_User
             {
@@ -77,8 +78,7 @@ namespace WeBScraper_CourseProject_
             {
                 await _context.NewsDb.AddAsync(news);
                 await _context.News_Users.AddAsync(usernews);
-                await _context.SaveChangesAsync();
-                
+                await _context.SaveChangesAsync();                
             }
             catch (Exception ex)
             {
@@ -262,6 +262,45 @@ namespace WeBScraper_CourseProject_
             }
 
             return jobs;
+        }
+
+        public async Task<string> DataGraph()
+        {
+            var usernews = await _context.News_Users
+                .Where(u => u.Id > 0)
+                .Include(i => i.News)                
+                .ToListAsync();
+
+            var news = await _context.NewsDb
+                .Where(n => n.IsLikes)
+                .Include(i => i.News_Users)
+                .ToListAsync();
+
+            var allnews = usernews
+                .Where(w => w.NewsId == w.News.Id)                 
+                .ToList();
+
+            var graphs = new List<Graphs>();
+
+            foreach (var item in allnews)
+            {
+                var findedUser = await _userManager.FindByIdAsync(item.UserId);               
+
+                var data = new Graphs
+                {                    
+                    NTitle = item.News.Title,
+                    UserName = findedUser.UserName
+                };
+
+                graphs.Add(data);
+            }
+            Neo4 neo = new Neo4(graphs, _userManager);
+            neo.Execute();
+
+            
+
+
+            return null;                
         }
     }
 }

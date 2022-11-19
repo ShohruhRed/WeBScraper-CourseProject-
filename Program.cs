@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
+using Neo4j.Driver;
 using WeBScraper_CourseProject_;
 using WeBScraper_CourseProject_.Areas.Identity;
 using WeBScraper_CourseProject_.Data;
@@ -31,6 +32,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuth
 
 builder.Services.AddScoped<ScraperService>().AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+//builder.Services.AddSingleton(GraphDatabase.Driver("bolt://localhost:7687", AuthTokens.Basic("red", "123456")));
 builder.Services.AddMudServices();
 builder.Services.AddAuthentication()
    .AddGoogle(options =>
