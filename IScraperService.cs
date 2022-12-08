@@ -13,6 +13,7 @@ namespace WeBScraper_CourseProject_
         public Task<List<News>> GetDbNews();
         public Task<List<News>> GetAllNews();
         public Task<string> AddNews(News news);
+        public Task<List<News>> GetSingleNews(int id);
         public Task DeleteNews(int id);
     }
 }

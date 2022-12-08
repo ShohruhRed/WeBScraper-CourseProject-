@@ -26,11 +26,12 @@
                                 <p class="card-text">@item.Title</p>
                             </div>
                             <div class="card-footer">
-                                <button type="button" class="btn btn-primary">Conversations<i class="bi bi-chat-square-text m-2"></i></button>
+                                <button type="button" class="btn btn-primary" @onclick="(() => ShowConversations(item.Id))">Conversations<i class="bi bi-chat-square-text m-2"></i></button>
                                 <button type="button" class="btn btn-danger" @onclick="(() => Delete(item.Id))">Delete<i class="bi bi-trash m-2"></i></button>
                             </div>
                             <div class="card-footer">
-                                <small class="text-muted">Last updated 3 mins ago</small>
+                                <small class="text-muted"><a href="@item.Details">Details</a></small>
+               
                             </div>
                         </div>
                     </div>
@@ -57,10 +58,15 @@
         LstData = await ScraperService.GetDbNews();
     }
 
+    async Task ShowConversations(int id)
+    {
+        NavigationManager.NavigateTo($"conversations/{id}");
+    }
+
     async Task Delete(int id)
     {
         await ScraperService.DeleteNews(id);
-        NavigationManager.NavigateTo("favourites");
+        NavigationManager.NavigateTo("favourites", true);
     }
 
 }

@@ -318,6 +318,19 @@ namespace WeBScraper_CourseProject_
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<News>> GetSingleNews(int id)
+        {
+            var list = new List<News>();
+
+            var single = await _context.NewsDb.FirstOrDefaultAsync(i => i.Id == id);
+
+
+            list.Add(single);
+            
+
+            return list;
+        }
+
         public async Task<string> DataGraph()
         {
             var usernews = await _context.News_Users
@@ -349,12 +362,10 @@ namespace WeBScraper_CourseProject_
                 graphs.Add(data);
             }
             Neo4 neo = new Neo4(graphs, _userManager);
-            neo.Execute();
-
-            
+            neo.Execute();           
 
 
             return null;                
-        }
+        }       
     }
 }

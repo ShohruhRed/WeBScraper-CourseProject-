@@ -1,0 +1,33 @@
+﻿@page "/conversations/{id:int}"
+@inject IScraperService ScraperService
+
+<h3>Conversations</h3>
+
+@if (LsData == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+     @foreach (var item in LsData)
+        {
+            <div class="card" style="width: 18rem;">
+                <img src="@item.Img" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <p class="card-text">@item.Title</p>
+                </div>
+            </div>
+        }
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    public List<News> LsData;
+
+
+    protected override async Task OnInitializedAsync() => LsData = await ScraperService.GetSingleNews(Id);
+
+
+}
