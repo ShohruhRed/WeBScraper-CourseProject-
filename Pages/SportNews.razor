@@ -1,7 +1,7 @@
 ﻿@page "/sportnews"
 @attribute [Authorize]
 @using WeBScraper_CourseProject_.Data
-@inject ScraperService ScraperService
+@inject IScraperService ScraperService
 @inject NavigationManager NavigationManager
 
 <h3>Sport News</h3>
@@ -53,17 +53,32 @@ else
 
 @code {
 
-public List<News> LstData;
-News news = new News();
+    public List<News> LstData;
+    News news = new News();
 
-protected override async Task OnInitializedAsync() => LstData = await ScraperService.SportNewsScraper();
+    protected override async Task OnInitializedAsync() => LstData = await ScraperService.SportNewsScraper();
 
- async Task ShowNews(string image,string title, string details)
+    async Task ShowNews(string image,string title, string details)
     {      
-        news.Img = image;
-        news.Title = title;
-        news.Details = details;
-        await ScraperService.AddNews(news);
+        if(news == null)
+        {
+            news = new News
+                {
+                    Img = image,
+                    Title = title,
+                    Details = details
+                };
+            await ScraperService.AddNews(news);
+        }
+        else
+        {
+            news.Img = image;
+            news.Title = title;
+            news.Details = details;
+            await ScraperService.AddNews(news);
+            news = null;
+        }
+       
     }
 
 }

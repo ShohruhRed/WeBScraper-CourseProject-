@@ -1,7 +1,7 @@
 ﻿@page "/gamesnews"
 @attribute [Authorize]
 @using WeBScraper_CourseProject_.Data
-@inject ScraperService ScraperService
+@inject IScraperService ScraperService
 @inject NavigationManager NavigationManager
 <h3>Games News</h3>
 
@@ -57,12 +57,26 @@ News news = new News();
 
 protected override async Task OnInitializedAsync() => LstData = await ScraperService.GamingNewsScraper();
 
- async Task ShowNews(string image,string title, string details)
+ private async Task ShowNews(string image,string title, string details)
     {      
-        news.Img = image;
-        news.Title = title;
-        news.Details = details;
-        await ScraperService.AddNews(news);
+        if (news == null)
+        {
+            news = new News
+                {
+                    Img = image,
+                    Title = title,
+                    Details = details
+                };
+            await ScraperService.AddNews(news);
+        }
+        else
+        {
+            news.Img = image;
+            news.Title = title;
+            news.Details = details;
+            await ScraperService.AddNews(news);
+            news = null;
+        }
     }
 
 }

@@ -11,6 +11,7 @@ namespace WeBScraper_CourseProject_
         public Task<List<News>> MusicNewsScraper();
         public Task<List<News>> MovieNewsScraper();
         public Task<List<News>> GetDbNews();
+        public Task<List<News>> GetAllNews();
         public Task<string> AddNews(News news);
     }
 }

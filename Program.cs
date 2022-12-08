@@ -10,6 +10,7 @@ using Neo4j.Driver;
 using WeBScraper_CourseProject_;
 using WeBScraper_CourseProject_.Areas.Identity;
 using WeBScraper_CourseProject_.Data;
+using WeBScraper_CourseProject_.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -20,18 +21,13 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 //builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //    options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
-
+builder.Services.AddApplicationServices(builder.Configuration);
   
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
 
-builder.Services.AddScoped<ScraperService>().AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+
+
 //builder.Services.AddSingleton(GraphDatabase.Driver("bolt://localhost:7687", AuthTokens.Basic("red", "123456")));
 builder.Services.AddMudServices();
 builder.Services.AddAuthentication()
@@ -85,6 +81,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 

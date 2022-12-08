@@ -1,6 +1,6 @@
 ﻿@page "/mudcard"
 @using WeBScraper_CourseProject_.Data
-@inject ScraperService ScraperService
+@inject IScraperService ScraperService
 <h3>Sport News</h3>
 
 @if (LstData == null)
@@ -11,24 +11,9 @@ else
 {
     <div class="row row-cols-1 row-cols-md-3 g-4">
         @foreach (var item in LstData)
-        {          
+        {        
         
-
-    @*<div class="card mb-3" style="max-width: 540px;">
-        <div class="row g-0">
-            <div class="col-md-4">                              
-                    <img src="@item.Img" class="img-fluid rounded-start" alt="...">                
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">                   
-                        <h5 class="card-title">Title</h5>
-                        <p class="card-text">@item.Title</p>
-                        <p class="card-text"><small class="text-muted">Последнее обновление 3 мин. назад</small></p>                  
-
-                </div>
-            </div>
-        </div>
-    </div>*@            
+          
                 <div class="col">
                     <div class="card h-100">
                         <img src="@item.Img" class="card-img-top" alt="...">

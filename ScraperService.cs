@@ -14,16 +14,17 @@ namespace WeBScraper_CourseProject_
         private readonly ApplicationDbContext _context;
         private readonly AuthenticationStateProvider _authenticationState;
         private readonly UserManager<ApplicationUser> _userManager;
-        
+       
 
         public ScraperService(ApplicationDbContext context, AuthenticationStateProvider authenticationState,
             UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _authenticationState = authenticationState;
-            _userManager = userManager;            
-        }
+            _userManager = userManager;           
+        }      
 
+        [HttpGet]
         public async Task<List<News>> GetDbNews()
         {
             var authstate = await _authenticationState.GetAuthenticationStateAsync();
@@ -85,7 +86,7 @@ namespace WeBScraper_CourseProject_
                 Console.WriteLine(ex.Message);
             }
 
-            return "successfully upload";
+            return "Ok";
 
         }
 
@@ -262,6 +263,45 @@ namespace WeBScraper_CourseProject_
             }
 
             return jobs;
+        }
+
+        public async Task<List<News>> GetAllNews()
+        {
+            var allnews = new List<News>();
+
+            var moviens = await MovieNewsScraper();
+            var sportns = await SportNewsScraper();
+            var belarusns = await BelarusNewsScraper();
+            var gamesns = await GamingNewsScraper();
+            var musicns = await MusicNewsScraper();
+            var uzbekistans = await UzbekistanNewsScraper();            
+
+            foreach (var item in moviens)
+            {
+                allnews.Add(item);
+            }
+            foreach (var item in sportns)
+            {
+                allnews.Add(item);
+            }
+            foreach (var item in belarusns)
+            {
+                allnews.Add(item);
+            }
+            foreach (var item in gamesns)
+            {
+                allnews.Add(item);
+            }
+            foreach (var item in musicns)
+            {
+                allnews.Add(item);
+            }
+            foreach (var item in uzbekistans)
+            {
+                allnews.Add(item);
+            }
+
+            return allnews;
         }
 
         public async Task<string> DataGraph()

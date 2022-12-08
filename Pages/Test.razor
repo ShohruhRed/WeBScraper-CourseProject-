@@ -1,6 +1,6 @@
 ﻿@page "/test"
 @using WeBScraper_CourseProject_.Data
-@inject ScraperService ScraperService
+@inject IScraperService ScraperService
 
 <h3>Test</h3>
 
@@ -76,10 +76,10 @@ else
     public List<News> LstData;
     News news = new News();
 
-    protected override Task OnInitializedAsync()
-    {
-        return  ScraperService.DataGraph(); 
-    }
+    //protected override Task OnInitializedAsync()
+    //{
+    //    return  ScraperService.DataGraph(); 
+    //}
 
 
     async Task ShowNews(string image, string title, string details)
