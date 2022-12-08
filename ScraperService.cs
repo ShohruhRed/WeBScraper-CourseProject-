@@ -46,6 +46,7 @@ namespace WeBScraper_CourseProject_
             {
                 var list = new News
                 {
+                    Id = item.News.Id,
                     Title = item.News.Title,
                     Details = item.News.Details,
                     Img = item.News.Img
@@ -302,6 +303,19 @@ namespace WeBScraper_CourseProject_
             }
 
             return allnews;
+        }
+
+        public async Task DeleteNews(int id)
+        {
+            var newsDb = await _context.NewsDb
+                .FirstOrDefaultAsync(i => i.Id == id);
+
+            var userNews = newsDb.News_Users.FirstOrDefault();
+
+            _context.NewsDb.Remove(newsDb);
+            _context.News_Users.Remove(userNews);
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<string> DataGraph()

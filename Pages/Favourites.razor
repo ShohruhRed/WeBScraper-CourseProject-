@@ -1,6 +1,7 @@
 ﻿@page "/favourites"
 @using WeBScraper_CourseProject_
 @inject IScraperService ScraperService
+@inject NavigationManager NavigationManager
 
 <AuthorizeView>
     <Authorized>
@@ -26,6 +27,7 @@
                             </div>
                             <div class="card-footer">
                                 <button type="button" class="btn btn-primary">Conversations<i class="bi bi-chat-square-text m-2"></i></button>
+                                <button type="button" class="btn btn-danger" @onclick="(() => Delete(item.Id))">Delete<i class="bi bi-trash m-2"></i></button>
                             </div>
                             <div class="card-footer">
                                 <small class="text-muted">Last updated 3 mins ago</small>
@@ -53,6 +55,12 @@
     protected override async Task OnInitializedAsync()
     {
         LstData = await ScraperService.GetDbNews();
+    }
+
+    async Task Delete(int id)
+    {
+        await ScraperService.DeleteNews(id);
+        NavigationManager.NavigateTo("favourites");
     }
 
 }
