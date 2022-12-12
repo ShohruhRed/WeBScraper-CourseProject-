@@ -38,14 +38,14 @@ builder.Services.AddAuthentication()
        options.ClientSecret = builder.Configuration.GetSection("Authentication")
        .GetValue<string>("ClientSecret");
 
-   })
-   .AddFacebook(options =>
-   {
-       options.ClientId = builder.Configuration.GetSection("AuthenticationFB")
-       .GetValue<string>("ClientId");
-       options.ClientSecret = builder.Configuration.GetSection("AuthenticationFB")
-       .GetValue<string>("ClientSecret");
    });
+   //.AddFacebook(options =>
+   //{
+   //    options.ClientId = builder.Configuration.GetSection("AuthenticationFB")
+   //    .GetValue<string>("ClientId");
+   //    options.ClientSecret = builder.Configuration.GetSection("AuthenticationFB")
+   //    .GetValue<string>("ClientSecret");
+   //});
    //.AddTwitter(options =>
    //{
    //    options.ConsumerKey = builder.Configuration.GetSection("AuthenticationTwitter")

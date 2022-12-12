@@ -73,7 +73,8 @@ namespace WeBScraper_CourseProject_
             {
                 NewsId = news.Id,
                 User = user,
-                News = news
+                News = news,
+                
             };
 
             try
