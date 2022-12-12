@@ -30,8 +30,7 @@
                                 <button type="button" class="btn btn-danger" @onclick="(() => Delete(item.Id))">Delete<i class="bi bi-trash m-2"></i></button>
                             </div>
                             <div class="card-footer">
-                                <small class="text-muted"><a href="@item.Details">Details</a></small>
-               
+                                <small class="text-muted"><a href="@item.Details">Details</a></small>               
                             </div>
                         </div>
                     </div>
@@ -60,7 +59,7 @@
 
     async Task ShowConversations(int id)
     {
-        NavigationManager.NavigateTo($"conversations/{id}");
+        NavigationManager.NavigateTo($"conversations/{id}");        
     }
 
     async Task Delete(int id)

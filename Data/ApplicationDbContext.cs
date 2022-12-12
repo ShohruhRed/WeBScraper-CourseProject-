@@ -27,6 +27,8 @@ namespace WeBScraper_CourseProject_.Data
         public DbSet<News> NewsDb { get; set; }
         public DbSet<ApplicationUser> AppUsers { get; set; }
         public DbSet<News_User> News_Users { get; set; }
+        public DbSet<Commentary> Commentaries { get; set; } 
+        public DbSet<Article> Articles { get; set; }
 
     }
 }

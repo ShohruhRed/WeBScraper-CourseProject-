@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Neo4j.Driver;
 using System.Net;
 using WeBScraper_CourseProject_.Data;
+using WeBScraper_CourseProject_.Pages;
 
 namespace WeBScraper_CourseProject_
 {
@@ -67,7 +68,8 @@ namespace WeBScraper_CourseProject_
             var authstate = await _authenticationState.GetAuthenticationStateAsync();
             var userAuth = authstate.User;
             var name = userAuth.Identity.Name;
-            var user =  await _userManager.FindByNameAsync(name);            
+            var user =  await _userManager.FindByNameAsync(name);
+                       
 
             var usernews = new News_User
             {
@@ -92,11 +94,11 @@ namespace WeBScraper_CourseProject_
 
         }
 
-        public async Task<List<News>> BelarusNewsScraper()
+        public async Task<List<Article>> BelarusNewsScraper()
         {
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            List<News> jobs = new List<News>();
+            List<Article> jobs = new List<Article>();
 
             var web = new HtmlWeb();
 
@@ -108,7 +110,7 @@ namespace WeBScraper_CourseProject_
                 string details = "https://www.belnovosti.by/" + item.SelectSingleNode(".//a").GetAttributeValue("href", null).Trim();
                 string img = item.SelectSingleNode(".//img").GetAttributeValue("src", null).Trim();
 
-                jobs.Add(new News()
+                jobs.Add(new Article()
                 {
                     Title = title,
                     Details = details,
@@ -120,11 +122,11 @@ namespace WeBScraper_CourseProject_
             return jobs;
         }      
 
-        public async Task<List<News>> UzbekistanNewsScraper()
+        public async Task<List<Article>> UzbekistanNewsScraper()
         {
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            List<News> jobs = new List<News>();
+            List<Article> jobs = new List<Article>();
 
             var web = new HtmlWeb();
 
@@ -137,7 +139,7 @@ namespace WeBScraper_CourseProject_
                 string details = "https://www.spot.uz/" + item.SelectSingleNode(".//a").GetAttributeValue("href", null).Trim();
                 string img = "https://www.spot.uz/" + item.SelectSingleNode(".//img").GetAttributeValue("data-src", null).Trim();
 
-                jobs.Add(new News()
+                jobs.Add(new Article()
                 {
                     Title = title,
                     Details = details,
@@ -149,11 +151,11 @@ namespace WeBScraper_CourseProject_
             return jobs;
         }
 
-        public async Task<List<News>> SportNewsScraper()
+        public async Task<List<Article>> SportNewsScraper()
         {
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            List<News> jobs = new List<News>();
+            List<Article> jobs = new List<Article>();
 
             var web = new HtmlWeb();
 
@@ -166,7 +168,7 @@ namespace WeBScraper_CourseProject_
                 string details = item.SelectSingleNode(".//a").GetAttributeValue("href", null).Trim();
                 string img = item.SelectSingleNode(".//img").GetAttributeValue("src", null).Trim();
 
-                jobs.Add(new News()
+                jobs.Add(new Article()
                 {
                     Title = title,
                     Details = details,
@@ -178,11 +180,11 @@ namespace WeBScraper_CourseProject_
             return jobs;
         }
 
-        public async Task<List<News>> GamingNewsScraper()
+        public async Task<List<Article>> GamingNewsScraper()
         {
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            List<News> jobs = new List<News>();
+            List<Article> jobs = new List<Article>();
 
             var web = new HtmlWeb();
 
@@ -195,7 +197,7 @@ namespace WeBScraper_CourseProject_
                 string details = item.SelectSingleNode(".//a").GetAttributeValue("href", null).Trim();
                 string img = item.SelectSingleNode(".//img").GetAttributeValue("src", null).Trim();
 
-                jobs.Add(new News()
+                jobs.Add(new Article()
                 {
                     Title = title,
                     Details = details,
@@ -207,11 +209,11 @@ namespace WeBScraper_CourseProject_
             return jobs;
         }
 
-        public async Task<List<News>> MusicNewsScraper()
+        public async Task<List<Article>> MusicNewsScraper()
         {
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            List<News> jobs = new List<News>();
+            List<Article> jobs = new List<Article>();
 
             var web = new HtmlWeb();
 
@@ -224,7 +226,7 @@ namespace WeBScraper_CourseProject_
                 string details = item.SelectSingleNode(".//a").GetAttributeValue("href", null).Trim();
                 string img = item.SelectSingleNode(".//img").GetAttributeValue("src", null).Trim();
 
-                jobs.Add(new News()
+                jobs.Add(new Article()
                 {
                     Title = title,
                     Details = details,
@@ -236,11 +238,11 @@ namespace WeBScraper_CourseProject_
             return jobs;
         }
 
-        public async Task<List<News>> MovieNewsScraper()
+        public async Task<List<Article>> MovieNewsScraper()
         {
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            List<News> jobs = new List<News>();
+            List<Article> jobs = new List<Article>();
 
             var web = new HtmlWeb();
 
@@ -254,7 +256,7 @@ namespace WeBScraper_CourseProject_
                 string details = "https://www.kinomania.ru/" + item.SelectSingleNode(".//a").GetAttributeValue("href", null).Trim();
                 string img = item.SelectSingleNode(".//img").GetAttributeValue("data-original", null).Trim();
 
-                jobs.Add(new News()
+                jobs.Add(new Article()
                 {
                     Title = title,
                     //Text = text,
@@ -267,43 +269,12 @@ namespace WeBScraper_CourseProject_
             return jobs;
         }
 
-        public async Task<List<News>> GetAllNews()
+        public async Task<List<Article>> GetAllNews()
         {
-            var allnews = new List<News>();
+            var allNews = await _context.Articles.ToListAsync();
 
-            var moviens = await MovieNewsScraper();
-            var sportns = await SportNewsScraper();
-            var belarusns = await BelarusNewsScraper();
-            var gamesns = await GamingNewsScraper();
-            var musicns = await MusicNewsScraper();
-            var uzbekistans = await UzbekistanNewsScraper();            
+            return allNews;
 
-            foreach (var item in moviens)
-            {
-                allnews.Add(item);
-            }
-            foreach (var item in sportns)
-            {
-                allnews.Add(item);
-            }
-            foreach (var item in belarusns)
-            {
-                allnews.Add(item);
-            }
-            foreach (var item in gamesns)
-            {
-                allnews.Add(item);
-            }
-            foreach (var item in musicns)
-            {
-                allnews.Add(item);
-            }
-            foreach (var item in uzbekistans)
-            {
-                allnews.Add(item);
-            }
-
-            return allnews;
         }
 
         public async Task DeleteNews(int id)
@@ -367,6 +338,74 @@ namespace WeBScraper_CourseProject_
 
 
             return null;                
-        }       
+        }
+
+        public async Task<string> AddCommentary(int newsId, string commentary)
+        {
+            var authstate = await _authenticationState.GetAuthenticationStateAsync();
+            var userAuth = authstate.User;
+            var name = userAuth.Identity.Name;
+
+            var createdComment = new Commentary
+            {
+                UserName = name,
+                InputText = commentary,
+                Created = DateTime.Now,
+                NewsId = newsId
+            };
+
+            await _context.Commentaries.AddAsync(createdComment);
+            await _context.SaveChangesAsync();
+
+            return "Ok";        
+
+        }
+
+        public Task<List<Commentary>> GetCommentaries(int newsId)
+        {
+
+            var commentaries = _context.Commentaries.Where(n => n.NewsId == newsId).ToListAsync();
+            
+            return commentaries;
+        }
+
+        public async Task<List<Article>> GetParsedArticles()
+        {
+            var allnews = new List<Article>();
+
+            var moviens = await MovieNewsScraper();
+            var sportns = await SportNewsScraper();
+            var belarusns = await BelarusNewsScraper();
+            var gamesns = await GamingNewsScraper();
+            var musicns = await MusicNewsScraper();
+            var uzbekistans = await UzbekistanNewsScraper();
+
+            foreach (var item in moviens)
+            {
+                allnews.Add(item);
+            }
+            foreach (var item in sportns)
+            {
+                allnews.Add(item);
+            }
+            foreach (var item in belarusns)
+            {
+                allnews.Add(item);
+            }
+            foreach (var item in gamesns)
+            {
+                allnews.Add(item);
+            }
+            foreach (var item in musicns)
+            {
+                allnews.Add(item);
+            }
+            foreach (var item in uzbekistans)
+            {
+                allnews.Add(item);
+            }                
+
+            return allnews;
+        }
     }
 }

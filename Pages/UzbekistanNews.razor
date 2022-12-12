@@ -38,7 +38,7 @@ else
                         <td id="newstitle">@item.Title</td>
                         <td id="newsdetails"><a href="@item.Details">Details</a></td>
                          <td>
-                            <button class="btn btn-primary"  @onclick="(() => ShowNews(item.Img,item.Title,item.Details,item.IsLikes))" ><i class="oi oi-eyedropper"></i></button>
+                            <button class="btn btn-primary"  @onclick="(() => ShowNews(item.Img,item.Title,item.Details))" ><i class="oi oi-eyedropper"></i></button>
                          </td>
                     </tr>
                 }
@@ -53,12 +53,12 @@ else
 
 @code {
 
-    public List<News> LstData;
+    public List<Article> LstData;
     News news = new News();
 
     protected override async Task OnInitializedAsync() => LstData = await ScraperService.UzbekistanNewsScraper();
 
-    async Task ShowNews(string image,string title, string details, bool isLike)
+    async Task ShowNews(string image,string title, string details)
     {      
         if (news == null)
         {

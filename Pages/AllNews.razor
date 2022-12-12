@@ -8,6 +8,70 @@
 @if (LstData == null)
 {
     <p><em>Loading...</em></p>
+    <div class="card" aria-hidden="true">
+        <img src="..." class="card-img-top" alt="..." style="width:250px;height:250px">
+        <div class="card-body">
+            <h5 class="card-title placeholder-glow">
+                <span class="placeholder col-6"></span>
+            </h5>
+            <p class="card-text placeholder-glow">
+                <span class="placeholder col-7"></span>
+                <span class="placeholder col-4"></span>
+                <span class="placeholder col-4"></span>
+                <span class="placeholder col-6"></span>
+                <span class="placeholder col-8"></span>
+            </p>
+            <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>
+        </div>
+    </div>
+        <div class="card" aria-hidden="true">
+        <img src="..." class="card-img-top" alt="..." style="width:250px;height:250px">
+        <div class="card-body">
+            <h5 class="card-title placeholder-glow">
+                <span class="placeholder col-6"></span>
+            </h5>
+            <p class="card-text placeholder-glow">
+                <span class="placeholder col-7"></span>
+                <span class="placeholder col-4"></span>
+                <span class="placeholder col-4"></span>
+                <span class="placeholder col-6"></span>
+                <span class="placeholder col-8"></span>
+            </p>
+            <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>
+        </div>
+    </div>
+    <div class="card" aria-hidden="true">
+        <img src="..." class="card-img-top" alt="..." style="width:250px;height:250px">
+        <div class="card-body">
+            <h5 class="card-title placeholder-glow">
+                <span class="placeholder col-6"></span>
+            </h5>
+            <p class="card-text placeholder-glow">
+                <span class="placeholder col-7"></span>
+                <span class="placeholder col-4"></span>
+                <span class="placeholder col-4"></span>
+                <span class="placeholder col-6"></span>
+                <span class="placeholder col-8"></span>
+            </p>
+            <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>
+        </div>
+    </div>
+    <div class="card" aria-hidden="true">
+        <img class="card-img-top" alt="..." style="width:250px;height:250px">
+        <div class="card-body">
+            <h5 class="card-title placeholder-glow">
+                <span class="placeholder col-6"></span>
+            </h5>
+            <p class="card-text placeholder-glow">
+                <span class="placeholder col-7"></span>
+                <span class="placeholder col-4"></span>
+                <span class="placeholder col-4"></span>
+                <span class="placeholder col-6"></span>
+                <span class="placeholder col-8"></span>
+            </p>
+            <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>
+        </div>
+    </div>
 }
 else
 {
@@ -24,7 +88,7 @@ else
                         <p class="card-text">@item.Title</p>
                     </div>
                     <div class="card-footer">
-                        <button type="button" class="btn btn-primary" @onclick="(() => ShowNews(item.Img,item.Title,item.Details))">Add to  <i class=" bi bi-heart"></i>
+                        <button type="button" class="btn btn-primary" @onclick="(() => ShowNews(item.Img,item.Title,item.Details, item.Id))">Add to  <i class=" bi bi-heart"></i>
 
     </button>
 
@@ -46,17 +110,18 @@ else
 }
 
 @code {
-    public List<News> LstData;    
-    News news = new News();    
+    public List<Article> LstData;    
+    News news = new News();   
 
     protected override async Task OnInitializedAsync()
     {
+
         LstData = await ScraperService.GetAllNews();
 
     }
 
 
-    async Task ShowNews(string image, string title, string details)
+    async Task ShowNews(string image, string title, string details, int id)
     {
         if (news == null)
         {
@@ -64,7 +129,8 @@ else
                 {
                     Img = image,
                     Title = title,
-                    Details = details                                       
+                    Details = details,
+                    NewsId =  id
                 };
             await ScraperService.AddNews(news);
             news = null;
@@ -74,6 +140,7 @@ else
             news.Img = image;
             news.Title = title;
             news.Details = details;
+            news.NewsId = id;
             await ScraperService.AddNews(news);
             news = null;
         }

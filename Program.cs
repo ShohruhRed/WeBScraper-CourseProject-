@@ -85,4 +85,21 @@ app.MapControllers();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
-app.Run();
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+
+try
+{
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    var scraperService = services.GetRequiredService<IScraperService>();
+    await context.Database.MigrateAsync();
+    await Seed.SeedUsers(context, scraperService);
+
+}
+catch (Exception ex)
+{
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An error occured during migration");
+}
+await app.RunAsync();
+

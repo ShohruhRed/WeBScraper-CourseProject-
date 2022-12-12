@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WeBScraper_CourseProject_.Data;
 
@@ -11,9 +12,10 @@ using WeBScraper_CourseProject_.Data;
 namespace WeBScraper_CourseProject_.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221212115522_AddedCommentaries")]
+    partial class AddedCommentaries
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,31 +161,6 @@ namespace WeBScraper_CourseProject_.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("WeBScraper_CourseProject_.News", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Details")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Img")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Articles");
-                });
-
             modelBuilder.Entity("WeBScraper_CourseProject_.Commentary", b =>
                 {
                     b.Property<int>("Id")
@@ -197,8 +174,7 @@ namespace WeBScraper_CourseProject_.Data.Migrations
 
                     b.Property<string>("InputText")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NewsId")
                         .HasColumnType("int");
@@ -295,9 +271,6 @@ namespace WeBScraper_CourseProject_.Data.Migrations
 
                     b.Property<bool>("IsLikes")
                         .HasColumnType("bit");
-
-                    b.Property<int>("NewsId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
