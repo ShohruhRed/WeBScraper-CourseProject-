@@ -88,24 +88,20 @@ else
                         <p class="card-text">@item.Title</p>
                     </div>
                     <div class="card-footer">
-                        <button type="button" class="btn btn-primary" @onclick="(() => ShowNews(item.Img,item.Title,item.Details, item.Id))">Add to  <i class=" bi bi-heart"></i>
-
+                        <button type="button" class="btn btn-primary" 
+                        @onclick="(() => ShowNews(item.Img,item.Title,item.Details, item.Id))">Add to  
+                        <i class=" bi bi-heart"></i>
     </button>
-
-
                     </div>
                     <div class="card-footer">
                         <small class="text-muted"><a href="@item.Details">Details</a></small>
-
                     </div>
                     <div class="card-footer">
                         <small class="text-muted">Last updated 3 mins ago</small>
                     </div>
                 </div>
             </div>
-
         }
-
     </div>
 }
 
@@ -115,9 +111,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-
         LstData = await ScraperService.GetAllNews();
-
     }
 
 
