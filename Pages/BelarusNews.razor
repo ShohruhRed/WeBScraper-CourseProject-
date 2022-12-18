@@ -12,43 +12,39 @@
 }
 else
 {
-   <div class="container">
-    <div class="panel panel-info">
-        <div class="panel-title">
-            <h3>BELARUS NEWS</h3>
-        </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var item in LstData)
+        {
+
+
+            <div class="col">
+                <div class="card h-100">
+                    <img src="@item.Img" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Belarus</h5>
+                        <p class="card-text">@item.Title</p>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-primary" @onclick="(() => ShowNews(item.Img,item.Title,item.Details))">
+                            Add to  <i class=" bi bi-heart"></i>
+
+                        </button>
+
+
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted"><a href="@item.Details">Details</a></small>
+
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Last updated 3 mins ago</small>
+                    </div>
+                </div>
+            </div>
+
+        }
+
     </div>
-   <div class="panel-body">
-       <table class ="table table-responsive">
-           <thead>
-               <tr>
-                   <th>Image</th>
-                   <th>Headline</th>
-                   <th>Details</th>
-                   <th>
-
-                   </th>
-               </tr>
-           </thead>
-           <tbody>
-                @foreach(var item in LstData)
-                {                   
-                    <tr>
-                        <td id="newsimage"><img src="@item.Img" style="width:80px;height:80px"/></td>
-                        <td id="newstitle">@item.Title</td>
-                        <td id="newsdetails"><a href="@item.Details">Details</a></td>
-                         <td>
-                            <button class="btn btn-primary"  @onclick="(() => ShowNews(item.Img,item.Title,item.Details))" ><i class="oi oi-eyedropper"></i></button>
-                         </td>
-                    </tr>
-                }
-            </tbody>
-
-       </table>
-        
-
-   </div>
-</div>
 }
 
 
